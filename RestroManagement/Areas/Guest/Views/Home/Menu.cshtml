@@ -1,4 +1,7 @@
-﻿<style>
+﻿@model List<RestroManagement.DbModels.FoodItem>
+@{
+}
+<style>
     .quantity-box {
         width: 180px;
         height: 55px;
@@ -30,46 +33,27 @@
         color: #1f2937;
         outline: none;
     }</style>
-    <div class="col-lg-4 col-md-6 col-sm-12">
+    <div class="row">
+    @foreach(var items in Model){
+    <div class="col-lg-3 col-md-6 col-sm-12">
         <div class="card h-100 shadow border-0">
-            <img src="https://images.unsplash.com/photo-1506084868230-bb9d95c24759"
-                 class="card-img-top"
-                 style="height:250px; object-fit:cover;"><div class="card-body text-center">
-            <h4>Pancakes 🥞</h4><h5 class="text-danger">₹149</h5><!-- Quantity Button --><div class="quantity-box mb-3">
-            <button type="button"
-                    class="qty-btn"
-                    onclick="decreaseQuantity('qty1')">
-                −
-            </button><input type="text"
-                            id="qty1"
-                            value="0"
-                            class="qty-input"
-                            readonly><button type="button"
-                         class="qty-btn"
-                         onclick="increaseQuantity('qty1')">
-            +
-        </button>
-    </div><form asp-controller="Cart"
-            asp-action="AddToCart"
-            method="post">
-    <input type="hidden"
-           name="ItemName"
-           value="Pancakes" /><input type="hidden"
-                              name="Price"
-                              value="149" /><input type="hidden"
-                         id="cartQty1"
-                         name="Quantity"
-                         value="0" /><button type="submit"
-                    class="btn btn-danger w-100"
-                    onclick="syncQuantity('qty1','cartQty1')">
-    Add to Cart 🛒
-
+            <img src="@items.Images.FirstOrDefault().ImageUrl"class="card-img-top"style="height:250px; object-fit:cover;"><div class="card-body text-center">
+                <h4>@items.Name</h4><h5 class="text-danger">₹@items.Portions.FirstOrDefault().Price/-</h5><!-- Quantity Button --><div class="quantity-box mb-3">
+            <button type="button"class="qty-btn"onclick="decreaseQuantity('qty1')">−</button>
+            <input type="text"id="qty1"value="0"class="qty-input"readonly>
+            <button type="button"class="qty-btn"onclick="increaseQuantity('qty1')">+</button>
+    </div>
+    <form asp-controller="Cart"asp-action="AddToCart"method="post">
+    <input type="hidden"name="ItemName"value="Pancakes" /><input type="hidden"name="Price" value="149" />
+    <input type="hidden"id="cartQty1"name="Quantity" value="0" />
+    <button type="submit"class="btn btn-danger w-100"onclick="syncQuantity('qty1','cartQty1')">Add to Cart 🛒
 </button>
 </form>
 </div>
 </div>
 </div>
-
+}
+</div>
 <script>
     function increaseQuantity(id) {
 

@@ -15,6 +15,7 @@ namespace RestroManagement.Data
         {
         }
         public DbSet<FoodItem> Fooditems { get; set; }
+        public object FoodItems { get; internal set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<MenuCategory> MenuCategories { get; set; }
