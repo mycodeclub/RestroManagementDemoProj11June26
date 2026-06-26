@@ -1,0 +1,19 @@
+{
+  "ConnectionStrings": {
+<<<<<<< HEAD
+    "DefaultConStr": "Server=.;Database=MRP25Jun;Trusted_Connection=True;trustservercertificate=true",
+    "AppDBContext": "Server=(localdb)\\mssqllocaldb;Database=AppDBContext;Trusted_Connection=True;MultipleActiveResultSets=true"
+=======
+    "DefaultConStr": "Server=.;Database=Restro;Trusted_Connection=True;trustservercertificate=true",
+    "AppDBContext": "Server=(localdb)\\mssqllocaldb;Database=AppDBContext;Trusted_Connection=True;MultipleActiveResultSets=true",
+    "LiveDB": "Data Source=SQL5101.site4now.net;Initial Catalog=db_a91a8c_myrestrodem0;User Id=db_a91a8c_myrestrodem0_admin;Password=MyRe$troDem0;Encrypt=True;TrustServerCertificate=True;"
+>>>>>>> c16838ee14931c34b8189c0ff370754cda61f84a
+  },
+  "Logging": {  
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
