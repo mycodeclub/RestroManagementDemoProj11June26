@@ -18,27 +18,29 @@ namespace RestroManagement.Areas.Restaurant.Controllers
             _context = context;
             _accountService = accountService;
         }
-        public async Task<IActionResult> RecentOrders(DateTime date)
+        public async Task<IActionResult> RecentOrders(DateTime? date)
         {
+            var filterDate = date ?? DateTime.Today;
             var merchantId = _accountService.GetLoggedInUserMerchantId() ?? 0;
             var orders = await _context.Orders
                 .Include(o => o.Items)
                 .ThenInclude(i => i.FoodItem)
-                .Where(o => o.OrderDate.Date == date.Date && o.MerchantId == merchantId)
+                .Where(o => o.OrderDate.Date == filterDate.Date && o.MerchantId == merchantId)
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
-            return PartialView("~/Areas/Restaurant/Views/Home/RecentOrders.cshtml", orders);
+            return View("~/Areas/Restaurant/Views/Home/RecentOrders.cshtml", orders);
         }
-        public async Task<IActionResult> GetRecentOrders(DateTime date)
+        public async Task<IActionResult> GetRecentOrders(DateTime? date)
         {
+            var filterDate = date ?? DateTime.Today;
             var merchantId = _accountService.GetLoggedInUserMerchantId() ?? 0;
             var orders = await _context.Orders
                 .Include(o => o.Items)
                 .ThenInclude(i => i.FoodItem)
-                .Where(o => o.OrderDate.Date == date.Date && o.MerchantId == merchantId)
+                .Where(o => o.OrderDate.Date == filterDate.Date && o.MerchantId == merchantId)
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
-            return PartialView("~/Areas/Restaurant/Views/Home/RecentOrders.cshtml", orders);
+            return PartialView("~/Areas/Restaurant/Views/Home/_RecentOrdersTable.cshtml", orders);
         }
         public async Task<IActionResult> Details(int? id)
         {
@@ -67,15 +69,16 @@ namespace RestroManagement.Areas.Restaurant.Controllers
                 .Where(oi => oi.Order!.MerchantId == merchantId)
                 .SumAsync(oi => oi.Price);
 
-            var recentOrders = await _context.Orders
+            ViewBag.PendingOrderCount = await _context.Orders.CountAsync(o => o.MerchantId == merchantId && o.Status == RestroManagement.DbModels.OrderStatus.Pending);
+
+            var pendingOrders = await _context.Orders
                 .Include(o => o.Items)
                   .ThenInclude(oi => oi.FoodItem)
-                .Where(o => o.MerchantId == merchantId)
+                .Where(o => o.MerchantId == merchantId && o.Status == RestroManagement.DbModels.OrderStatus.Pending)
                 .OrderByDescending(o => o.OrderDate)
-                .Take(5)
                 .ToListAsync();
 
-            return View(recentOrders);
+            return View(pendingOrders);
         }
         // GET: Guest/Home/Customers
         public async Task<IActionResult> Customers()
